@@ -1,4 +1,0 @@
-typing
-pydantic
-fastapi
-psycopg2
