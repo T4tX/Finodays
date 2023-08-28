@@ -1,6 +1,9 @@
 from typing import Union, List
 from pydantic import BaseModel
 from fastapi import FastAPI
+from fastapi.responses import JSONResponse
+import db
+
 
 
 app = FastAPI()
@@ -34,7 +37,9 @@ async def put_item(item_id: int, item: Item):
 
 @app.get(("/products"))
 async def get_products_list(category: Union[str, None] = None):
-    return {'products':'list'}
+    records = db.query("select * from products")
+    products_list = {'products': records}
+    return JSONResponse(content=products_list)
 
 @app.get(("/products/{id}"))
 async def get_products_by_id(id: int):
