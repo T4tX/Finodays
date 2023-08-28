@@ -1,7 +1,9 @@
 import psycopg2
 
 
-conn = psycopg2.connect(dbname='postgres', user='postgres', password='postgres', host='db')
+conn = psycopg2.connect(dbname='postgres', user='postgres',
+
+                        password='postgres', host='db')
 
 cursor = conn.cursor()
 
@@ -34,9 +36,12 @@ db_init()
 
 
 def query(query):
-
     cursor.execute(query)
+    try:
+        records = cursor.fetchall()
+        return records
+    except:
+        return None
 
-    records = cursor.fetchall()
 
-    return records
+
