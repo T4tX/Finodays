@@ -2,11 +2,11 @@
 ```
 docker-compose build
 ```
-# Run image
+# Run container
 ```
 docker-compose up -d
 ```
-# Stop image
+# Stop container
 ```
 docker-compose down
 ```
