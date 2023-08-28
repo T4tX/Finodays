@@ -6,6 +6,10 @@ docker-compose build
 ```
 docker-compose up -d
 ```
+# Stop image
+```
+docker-compose down
+```
 # INFO
 ## Postgres
 dbname='postgres', user='postgres', password='postgres', host='localhost:5432'
