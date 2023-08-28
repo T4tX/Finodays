@@ -20,20 +20,15 @@ class Products(BaseModel):
     category: str
 
 class Order(BaseModel):
-    product_id: int
+    from_user_id: int
+    to_user_id: int
     price: int
-    payment_method: int
+    product_id: int
+    create_date: str
 
 @app.get("/")
 async def index():
     return {'hello':'world'}
-'''@app.get("/items/{item_id}")
-async def read_item(item_id: int, q: Union[str, None] = None):
-    return {"item_id": item_id, "q": q}
-
-@app.put(("/items/{item_id}"))
-async def put_item(item_id: int, item: Item):
-    return {"item_name": item.name, "item_id": item_id}'''
 
 @app.get(("/products"))
 async def get_products_list(category: Union[str, None] = None):
@@ -43,19 +38,30 @@ async def get_products_list(category: Union[str, None] = None):
 
 @app.get(("/products/{id}"))
 async def get_products_by_id(id: int):
-    return {'product_id': id,'product_name': 'name'}
+    records = db.query(f"select * from products where id = {id}")
+    products_list = {'product': records}
+    return JSONResponse(content=products_list)
+
 
 @app.get(("/orders/{user_id}"))
 async def get_user_orders_by_id(user_id: int):
-    return {'user_id': user_id, 'orders': 'orders'}
+    records = db.query(f"select * from orders where from_user_id = {user_id}")
+    products_list = {'orders': records}
+    return JSONResponse(content=products_list)
+
 
 @app.post(("/orders"))
 async def make_order(order_list: List[Order]):
+    for order in order_list:
+        records = db.query(
+                f"insert into orders values (default,{order.from_user_id},{order.to_user_id},{order.price},{order.product_id},'{order.create_date}')")
     return {"Confirmed"}
 
 @app.get(("/orders/{id}"))
 async def get_order_by_id(id: int):
-    return {'order_id': id, 'order_status': 'status'}
+    records = db.query(f"select * from orders where id = {id}")
+    products_list = {'order': records}
+    return JSONResponse(content=products_list)
 
 @app.put(("/orders/{id}/cancel"))
 async def order_cansel(id: int):
