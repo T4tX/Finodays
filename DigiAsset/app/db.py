@@ -1,19 +1,13 @@
 import psycopg2
 
 
-conn = psycopg2.connect(dbname='postgres', user='postgres',
-
-                        password='postgres', host='db')
+conn = psycopg2.connect(dbname='postgres', user='postgres', password='postgres', host='db')
 
 cursor = conn.cursor()
 
 
 def db_init():
-    """
-    Инициализация базы данных.
 
-    Создает таблицы users, products, orders и заполняет их тестовыми данными.
-    """
     cursor.execute(
         "CREATE TABLE IF NOT EXISTS users (id serial NOT NULL PRIMARY KEY,login TEXT, password TEXT, reg_date TEXT)")
 
@@ -40,15 +34,6 @@ db_init()
 
 
 def query(query):
-    """
-    Выполняет SQL-запрос и возвращает результат в виде списка кортежей.
-
-    :param query: SQL-запрос
-    :return: список кортежей с результатами запроса или None, если запрос не удалось выполнить
-    """
     cursor.execute(query)
-    try:
-        records = cursor.fetchall()
-        return records
-    except:
-        return None
+    records = cursor.fetchall()
+    return records
